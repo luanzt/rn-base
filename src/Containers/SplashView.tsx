@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react'
 import { ActivityIndicator, View, Text } from 'react-native'
-import { useTheme } from 'Hooks'
-import { setDefaultTheme } from 'Store/Theme'
-import { navigateAndSimpleReset } from 'Navigators/utils'
+import { useTheme } from '@/Hooks'
+import { setDefaultTheme } from '@/Store/Theme'
+import { navigateAndSimpleReset } from '@/Navigators/utils'
 
 const StartupContainer = () => {
   const { Layout, Gutters, Fonts } = useTheme()
