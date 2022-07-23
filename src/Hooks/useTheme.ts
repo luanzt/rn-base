@@ -9,15 +9,15 @@ import {
   Layout,
   themes,
   DefaultVariables
-} from '@/Theme'
-import { ThemeState } from '@/Store/Theme'
+} from 'Theme'
+import { ThemeState } from 'Store/Theme'
 import {
   Theme,
   ThemeCommon,
   ThemeNavigationColors,
   ThemeNavigationTheme,
   ThemeVariables
-} from '@/Theme/theme.type'
+} from 'Theme/theme.type'
 
 export default function () {
   // Get the scheme device

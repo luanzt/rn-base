@@ -13,8 +13,8 @@ import {
 import { configureStore } from '@reduxjs/toolkit'
 import { setupListeners } from '@reduxjs/toolkit/query'
 
-import { api } from '@/Services/api'
-import * as modules from '@/Services/modules'
+import { api } from 'Services/api'
+import * as modules from 'Services/modules'
 import theme from './Theme'
 
 const reducers = combineReducers({
