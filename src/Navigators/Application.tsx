@@ -2,9 +2,9 @@ import React from 'react'
 import { SafeAreaView, StatusBar } from 'react-native'
 import { createStackNavigator } from '@react-navigation/stack'
 import { NavigationContainer } from '@react-navigation/native'
-import { SplashView } from 'Navigators/Containers'
+import { SplashView } from '@/Navigators/Stack'
 import { useTheme } from '@/Hooks'
-import MainNavigator from 'Containers/Main'
+import MainNavigator from '@/Containers/Main'
 import { navigationRef } from './utils'
 
 const Stack = createStackNavigator()

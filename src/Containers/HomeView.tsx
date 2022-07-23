@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Text, SafeAreaView } from 'react-native'
-import { useAppDispatch, useAppSelector, useTheme } from 'Hooks'
-import { useLazyFetchUsersQuery } from 'Services/modules/users'
+import { useAppDispatch, useAppSelector, useTheme } from '@/Hooks'
+import { useLazyFetchUsersQuery } from '@/Services/modules/users'
 
 const HomeView = () => {
   const { Layout } = useTheme()
