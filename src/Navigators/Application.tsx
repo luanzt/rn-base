@@ -3,7 +3,7 @@ import { SafeAreaView, StatusBar } from 'react-native'
 import { createStackNavigator } from '@react-navigation/stack'
 import { NavigationContainer } from '@react-navigation/native'
 import { SplashView } from 'Navigators/Containers'
-import { useTheme } from 'Hooks'
+import { useTheme } from '@/Hooks'
 import MainNavigator from 'Containers/Main'
 import { navigationRef } from './utils'
 
