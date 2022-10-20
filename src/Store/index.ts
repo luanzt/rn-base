@@ -1,64 +1,75 @@
-import AsyncStorage from '@react-native-async-storage/async-storage'
-import { combineReducers, Middleware } from 'redux'
-import {
-  persistReducer,
-  persistStore,
-  FLUSH,
-  REHYDRATE,
-  PAUSE,
-  PERSIST,
-  PURGE,
-  REGISTER
-} from 'redux-persist'
-import { configureStore } from '@reduxjs/toolkit'
-import { setupListeners } from '@reduxjs/toolkit/query'
+import thunk from 'redux-thunk'
+import { createStore, applyMiddleware } from 'redux'
+import rootReducer from '@/Services/reducers'
+import * as types from '@/Services/actions'
+import * as texts from '@/Constants/texts'
+import axios from 'axios'
+import axiosMiddleware from 'redux-axios-middleware'
+import { HOST } from '@/Services/endpoints'
 
-import { api } from '@/Services/api'
-import * as modules from '@/Services/modules'
-import theme from './Theme'
-
-const reducers = combineReducers({
-  theme,
-  ...Object.values(modules).reduce(
-    (acc, module) => ({
-      ...acc,
-      [module.reducerPath]: module.reducer
-    }),
-    {}
-  )
-})
-
-const persistConfig = {
-  key: 'root',
-  storage: AsyncStorage,
-  whitelist: ['theme']
+interface ConfigParam {
+  getState: any
+  dispatch: any
+  getSourceAction: any
 }
 
-const persistedReducer = persistReducer(persistConfig, reducers)
-
-const store = configureStore({
-  reducer: persistedReducer,
-  middleware: getDefaultMiddleware => {
-    const middlewares = getDefaultMiddleware({
-      serializableCheck: {
-        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER]
-      }
-    }).concat(api.middleware as Middleware)
-
-    if (__DEV__ && !process.env.JEST_WORKER_ID) {
-      const createDebugger = require('redux-flipper').default
-      middlewares.push(createDebugger())
-    }
-
-    return middlewares
-  }
+const client = axios.create({
+  //all axios can be used, shown in axios documentation
+  baseURL: HOST,
+  responseType: 'json'
 })
 
-const persistor = persistStore(store)
+const apiMiddleware = {
+  interceptors: {
+    request: [
+      {
+        success: function (
+          { getState, dispatch, getSourceAction }: ConfigParam,
+          req: any
+        ) {
+          return req
+        },
+        error: function (
+          { getState, dispatch, getSourceAction }: ConfigParam,
+          error: any
+        ) {
+          return error
+        }
+      }
+    ],
+    response: [
+      {
+        success: function (
+          { getState, dispatch, getSourceAction }: ConfigParam,
+          res: any
+        ) {
+          return Promise.resolve(res)
+        },
+        error: function (
+          { getState, dispatch, getSourceAction }: ConfigParam,
+          error: any
+        ) {
+          return Promise.reject(error)
+        }
+      }
+    ]
+  }
+}
 
-setupListeners(store.dispatch)
+let store = createStore(
+  rootReducer,
+  applyMiddleware(thunk, axiosMiddleware(client, apiMiddleware))
+)
+
+const { dispatch } = store
+
+function logout() {
+  dispatch({
+    type: types.TOKEN_EXPIRED
+  })
+}
 
 export type RootState = ReturnType<typeof store.getState>
 export type AppDispatch = typeof store.dispatch
 
-export { store, persistor }
+export default store
