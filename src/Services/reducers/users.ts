@@ -30,8 +30,7 @@ export const user = (state = defaultState, action: any): UserState => {
       return { ...state, signing: true }
 
     case Actions.LOGIN_SUCESS:
-      console.log(action)
-      return { ...state, signing: false }
+      return { ...state, token: action.payload.auth_token }
 
     case Actions.LOGIN_ERROR:
       return { ...state, signing: false }

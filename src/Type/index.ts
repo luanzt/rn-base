@@ -1,5 +1,3 @@
-import { AxiosRequestConfig } from 'axios'
-
 export interface User {
   address: string | null
   avatar: string | null
@@ -27,11 +25,4 @@ export interface User {
   num_of_showed_public_reviews_modal: number
   approved_sharing_book_reviews_publicly: boolean | null
   get_requested_club_ids?: number[]
-}
-
-export interface Action {
-  type: string | [string, string, string]
-  payload: {
-    request: AxiosRequestConfig
-  }
 }

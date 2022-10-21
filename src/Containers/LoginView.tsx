@@ -8,6 +8,7 @@ import {
 import React, { useState } from 'react'
 import { useAppDispatch } from '@/Hooks'
 import * as userActions from '@/Services/apis/users'
+import get from 'lodash/get'
 
 export default function LoginView() {
   const dispatch = useAppDispatch()
@@ -16,7 +17,11 @@ export default function LoginView() {
   const [password, changePassword] = useState('')
 
   const handleLogin = () => {
-    dispatch(userActions.login({ email, password }))
+    dispatch(userActions.login({ email, password })).then((res: any) => {
+      if (!get(res, 'error') && get(res, 'payload.auth_token')) {
+        dispatch(userActions.getMe())
+      }
+    })
   }
 
   return (

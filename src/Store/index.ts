@@ -2,16 +2,10 @@ import thunk from 'redux-thunk'
 import { createStore, applyMiddleware } from 'redux'
 import rootReducer from '@/Services/reducers'
 import * as types from '@/Services/actions'
-import * as texts from '@/Constants/texts'
 import axios from 'axios'
 import axiosMiddleware from 'redux-axios-middleware'
 import { HOST } from '@/Services/endpoints'
-
-interface ConfigParam {
-  getState: any
-  dispatch: any
-  getSourceAction: any
-}
+import get from 'lodash/get'
 
 const client = axios.create({
   //all axios can be used, shown in axios documentation
@@ -23,32 +17,34 @@ const apiMiddleware = {
   interceptors: {
     request: [
       {
-        success: function (
-          { getState, dispatch, getSourceAction }: ConfigParam,
-          req: any
-        ) {
-          return req
-        },
-        error: function (
-          { getState, dispatch, getSourceAction }: ConfigParam,
-          error: any
-        ) {
-          return error
+        success: function (store: any, req: any) {
+          //merge header from client and we pass manual
+          const headers = Object.assign(
+            {},
+            get(req, 'headers.common'),
+            get(req, 'reduxSourceAction.payload.request.headers')
+          )
+          if (get(store.getState(), 'user.token')) {
+            headers.Authorization = `Token ${get(
+              store.getState(),
+              'user.token'
+            )}`
+          }
+          return {
+            ...req,
+            headers: {
+              common: headers
+            }
+          }
         }
       }
     ],
     response: [
       {
-        success: function (
-          { getState, dispatch, getSourceAction }: ConfigParam,
-          res: any
-        ) {
-          return Promise.resolve(res)
+        success: function (store: any, res: any) {
+          return Promise.resolve(res.data)
         },
-        error: function (
-          { getState, dispatch, getSourceAction }: ConfigParam,
-          error: any
-        ) {
+        error: function (store: any, error: any) {
           return Promise.reject(error)
         }
       }
@@ -64,6 +60,7 @@ let store = createStore(
 const { dispatch } = store
 
 function logout() {
+  console.log('zo')
   dispatch({
     type: types.TOKEN_EXPIRED
   })
