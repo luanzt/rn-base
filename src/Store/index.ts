@@ -1,7 +1,6 @@
 import thunk from 'redux-thunk'
 import { createStore, applyMiddleware } from 'redux'
 import rootReducer from '@/Services/reducers'
-import * as types from '@/Services/actions'
 import axios from 'axios'
 import axiosMiddleware from 'redux-axios-middleware'
 import { HOST } from '@/Services/endpoints'
@@ -56,15 +55,6 @@ let store = createStore(
   rootReducer,
   applyMiddleware(thunk, axiosMiddleware(client, apiMiddleware))
 )
-
-const { dispatch } = store
-
-function logout() {
-  console.log('zo')
-  dispatch({
-    type: types.TOKEN_EXPIRED
-  })
-}
 
 export type RootState = ReturnType<typeof store.getState>
 export type AppDispatch = typeof store.dispatch

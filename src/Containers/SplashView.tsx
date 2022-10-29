@@ -1,6 +1,8 @@
 import React, { useEffect } from 'react'
-import { ActivityIndicator, View, Text, StyleSheet } from 'react-native'
+import { View, StyleSheet } from 'react-native'
 import { navigateAndSimpleReset } from '@/Navigators/utils'
+import { SvgXml } from 'react-native-svg'
+import { Logo } from '@/Assets/Images'
 
 const SplashView = () => {
   const init = async () => {
@@ -18,16 +20,18 @@ const SplashView = () => {
 
   return (
     <View style={styles.container}>
-      <ActivityIndicator size={'large'} color="white" />
+      <SvgXml xml={Logo} height={140} width={140} />
     </View>
   )
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    height: '100%',
+    width: '100%',
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    backgroundColor: '#FFF'
   }
 })
 

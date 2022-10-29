@@ -1,7 +1,5 @@
-export const HOST_LIVE = 'https://greenglobal.vn/'
-export const HOST_STAGING = 'https://api2.staging.bookclubz.com/'
+export const HOST = 'https://api.themoviedb.org/3/'
 
-export const HOST = HOST_STAGING
-
-export const login = 'auth/token/login/'
-export const getMe = 'auth/users/me/'
+export const requestToken = 'authentication/token/new'
+export const login = 'authentication/token/validate_with_login'
+export const getSession = 'authentication/session/new'
