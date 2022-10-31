@@ -1,3 +1,3 @@
-import Logo from './logo.svg'
-
-export { Logo }
+export default {
+  Splash: require('./bg_splash.jpeg')
+}

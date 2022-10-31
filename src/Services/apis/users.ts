@@ -3,20 +3,31 @@ import * as Endpoints from '@/Services/endpoints'
 import { AxiosRequestConfig } from 'axios'
 
 export type LoginData = {
-  email: string
+  username: string
   password: string
+  request_token: string
 }
 
-export const getMe = (): any => ({
+export const getRequestToken = (): any => ({
+  type: Actions.FETCHING_REQUEST_TOKEN,
+  payload: {
+    request: {
+      method: 'GET',
+      url: Endpoints.requestToken
+    } as AxiosRequestConfig
+  }
+})
+
+export const getRequestSession = (): any => ({
   types: [
-    Actions.FETCHING_USER_INFO,
-    Actions.FETCHING_USER_INFO_SUCCESS,
-    Actions.FETCHING_USER_INFO_ERROR
+    Actions.FETCHING_SESSION,
+    Actions.FETCHING_SESSION_SUCCESS,
+    Actions.FETCHING_SESSION_ERROR
   ],
   payload: {
     request: {
       method: 'GET',
-      url: Endpoints.getMe
+      url: Endpoints.requestSession
     } as AxiosRequestConfig
   }
 })

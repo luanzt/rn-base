@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import { View, StyleSheet } from 'react-native'
 import { navigateAndSimpleReset } from '@/Navigators/utils'
 import { SvgXml } from 'react-native-svg'
-import { Logo } from '@/Assets/Images'
+import { Icons } from '@/Assets'
 
 const SplashView = () => {
   const init = async () => {
@@ -20,7 +20,7 @@ const SplashView = () => {
 
   return (
     <View style={styles.container}>
-      <SvgXml xml={Logo} height={140} width={140} />
+      <SvgXml xml={Icons.Logo} height={140} width={140} />
     </View>
   )
 }

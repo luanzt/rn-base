@@ -1,4 +1,5 @@
 import {
+  ActivityIndicator,
   StyleSheet,
   Text,
   TextInput,
@@ -8,33 +9,52 @@ import {
 import React, { useState } from 'react'
 import { useAppDispatch } from '@/Hooks'
 import * as userActions from '@/Services/apis/users'
-import get from 'lodash/get'
+import { Colors } from '@/Constants'
 
 export default function LoginView() {
   const dispatch = useAppDispatch()
 
-  const [email, changeEmail] = useState('')
+  const [username, changeUsername] = useState('')
   const [password, changePassword] = useState('')
+  const [isLoading, setLoading] = useState(false)
 
-  const handleLogin = () => {
-    dispatch(userActions.login({ email, password })).then((res: any) => {
-      if (!get(res, 'error') && get(res, 'payload.auth_token')) {
-        dispatch(userActions.getMe())
+  const handleLogin = async () => {
+    if (username.trim() && password.trim()) {
+      setLoading(true)
+      const tokenResult = await dispatch(userActions.getRequestToken())
+      if (!tokenResult.error && tokenResult.payload.request_token) {
+        const loginResult = await dispatch(
+          userActions.login({
+            username,
+            password,
+            request_token: tokenResult.payload.request_token
+          })
+        )
+        if (!loginResult.error && loginResult.payload) {
+          console.log('Login success', loginResult)
+        }
       }
-    })
+      setLoading(false)
+    }
   }
 
   return (
     <View style={styles.container}>
-      <TextInput value={email} onChangeText={changeEmail} placeholder="Email" />
+      <TextInput
+        value={username}
+        onChangeText={changeUsername}
+        placeholder="Email"
+      />
       <TextInput
         value={password}
         onChangeText={changePassword}
         placeholder="Password"
+        secureTextEntry
       />
-      <TouchableOpacity onPress={handleLogin}>
+      <TouchableOpacity onPress={handleLogin} disabled={isLoading}>
         <Text>Login</Text>
       </TouchableOpacity>
+      {isLoading && <ActivityIndicator color={Colors.black} />}
     </View>
   )
 }

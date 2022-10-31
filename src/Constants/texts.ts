@@ -1,1 +1,3 @@
-export const titleLogin = 'Login'
+export default {
+  login: 'Login'
+}
