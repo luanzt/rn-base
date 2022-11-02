@@ -1,0 +1,14 @@
+---
+version: 2
+updates:
+  - package-ecosystem: "npm"
+    # Files stored in repository root
+    directory: "/"
+    target-branch: "develop"
+    allow:
+      - dependency-name: "*sentry*"
+      - dependency-name: "typescript"
+      - dependency-name: "*standard*"
+      - dependency-name: "*eslint*"
+    schedule:
+      interval: "monthly"

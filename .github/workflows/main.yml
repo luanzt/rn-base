@@ -1,0 +1,52 @@
+# This workflow will do a clean install of node dependencies, build the source code and run tests across different versions of node
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
+
+name: CI
+
+on:
+  push:
+    branches:
+      - '*'
+  pull_request:
+    branches: [ main, develop, fresher-duy ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+    - uses: actions/checkout@v2
+
+    # Install NodeJS
+    - name: Use Node.js
+      uses: actions/setup-node@v1
+      with:
+        node-version: '14.x'
+
+    # Install yarn
+    - name: Install yarn
+      run: npm install yarn
+
+    # The yarn cache directory will depend on your operating system and version of yarn.
+    # See https://yarnpkg.com/lang/en/docs/cli/cache/ for more info.
+    - name: Get yarn cache directory path
+      id: yarn-cache-dir-path
+      run: echo "::set-output name=dir::$(yarn cache dir)"
+
+    - uses: actions/cache@v2
+      id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
+      with:
+        path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+        key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+        restore-keys: |
+                  ${{ runner.os }}-yarn-
+
+    # Install dependencies
+    - name: Install dependencies
+      run: yarn
+
+    # Run test suites
+    - name: Run check types and format
+      run: yarn check-all

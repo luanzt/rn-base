@@ -9,6 +9,7 @@
     "test": "jest",
     "lint": "eslint .",
     "check-ts": "tsc",
+    "check-all": "yarn lint && yarn check-ts", 
     "format": "prettier --config .prettierrc.js './**/*.{ts,tsx}' --write"
   },
   "dependencies": {
