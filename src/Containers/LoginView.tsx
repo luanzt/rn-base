@@ -1,15 +1,21 @@
 import {
   ActivityIndicator,
-  StyleSheet,
   Text,
+  StyleSheet,
   TextInput,
   TouchableOpacity,
-  View
+  View,
+  ToastAndroid,
+  Keyboard,
+  Image
 } from 'react-native'
 import React, { useState } from 'react'
 import { useAppDispatch } from '@/Hooks'
 import * as userActions from '@/Services/apis/users'
 import { Colors } from '@/Constants'
+import { Images } from '@/Assets'
+import { AppBar } from '@react-native-material/core'
+import { navigate } from '@/Navigators/utils'
 
 export default function LoginView() {
   const dispatch = useAppDispatch()
@@ -19,6 +25,7 @@ export default function LoginView() {
   const [isLoading, setLoading] = useState(false)
 
   const handleLogin = async () => {
+    Keyboard.dismiss()
     if (username.trim() && password.trim()) {
       setLoading(true)
       const tokenResult = await dispatch(userActions.getRequestToken())
@@ -32,6 +39,11 @@ export default function LoginView() {
         )
         if (!loginResult.error && loginResult.payload) {
           console.log('Login success', loginResult)
+          ToastAndroid.show('Login success!', ToastAndroid.SHORT)
+          navigate('Main', '')
+        } else {
+          console.log('Login fail')
+          ToastAndroid.show('Login fail!', ToastAndroid.SHORT)
         }
       }
       setLoading(false)
@@ -39,23 +51,39 @@ export default function LoginView() {
   }
 
   return (
-    <View style={styles.container}>
-      <TextInput
-        value={username}
-        onChangeText={changeUsername}
-        placeholder="Email"
+    <>
+      <AppBar
+        title="Login"
+        centerTitle={true}
+        transparent={true}
+        tintColor={Colors.black}
+        leading={<Image style={styles.backbt} source={Images.Back} />}
       />
-      <TextInput
-        value={password}
-        onChangeText={changePassword}
-        placeholder="Password"
-        secureTextEntry
-      />
-      <TouchableOpacity onPress={handleLogin} disabled={isLoading}>
-        <Text>Login</Text>
-      </TouchableOpacity>
-      {isLoading && <ActivityIndicator color={Colors.black} />}
-    </View>
+      <View style={styles.container}>
+        <TextInput
+          style={styles.edttext}
+          value={username}
+          onChangeText={changeUsername}
+          placeholder="Your email"
+        />
+        <TextInput
+          style={styles.edttext}
+          value={password}
+          onChangeText={changePassword}
+          placeholder="Password"
+          secureTextEntry
+        />
+        <TouchableOpacity
+          onPress={handleLogin}
+          disabled={isLoading}
+          style={styles.button}
+        >
+          <Text style={styles.text}>Login</Text>
+        </TouchableOpacity>
+        <Image style={styles.image} source={Images.Login} />
+        {isLoading && <ActivityIndicator color={Colors.black} />}
+      </View>
+    </>
   )
 }
 
@@ -63,6 +91,37 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'center'
+    paddingHorizontal: 30,
+    paddingTop: 100
+  },
+  button: {
+    borderRadius: 20,
+    backgroundColor: Colors.black_button,
+    height: 35,
+    width: 95,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 20
+  },
+  text: {
+    color: Colors.primary,
+    fontSize: 12,
+    textTransform: 'uppercase',
+    fontWeight: 'bold',
+    letterSpacing: 3
+  },
+  edttext: {
+    flexWrap: 'wrap',
+    borderBottomWidth: 1,
+    borderBottomColor: Colors.border_bottom,
+    height: 42,
+    width: '100%',
+    fontSize: 15
+  },
+  image: {
+    marginTop: 150
+  },
+  backbt: {
+    marginLeft: 20
   }
 })
