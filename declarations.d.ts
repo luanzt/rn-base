@@ -1,4 +1,5 @@
 declare module '*.svg' {
-  const content: string | null
+  import React from 'react'
+  const content: any
   export default content
 }
