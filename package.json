@@ -4,12 +4,12 @@
   "private": true,
   "scripts": {
     "android": "react-native run-android",
-    "ios": "react-native run-ios --simulator='iPhone 11'",
+    "ios": "react-native run-ios --simulator='iPhone 13'",
     "start": "react-native start",
     "test": "jest",
     "lint": "eslint .",
     "check-ts": "tsc",
-    "check-all": "yarn lint && yarn check-ts", 
+    "check-all": "yarn lint && yarn check-ts",
     "format": "prettier --config .prettierrc.js './**/*.{ts,tsx}' --write"
   },
   "dependencies": {

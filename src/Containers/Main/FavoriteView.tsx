@@ -1,10 +1,10 @@
 import React from 'react'
 import { Text, SafeAreaView, StyleSheet } from 'react-native'
 
-const HomeView = () => {
+const FavoriteView = () => {
   return (
     <SafeAreaView style={styles.container}>
-      <Text>Home</Text>
+      <Text>Favorite</Text>
     </SafeAreaView>
   )
 }
@@ -15,4 +15,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default HomeView
+export default FavoriteView

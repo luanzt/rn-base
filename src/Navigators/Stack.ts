@@ -1,3 +1,5 @@
-export { default as HomeView } from '@/Containers/Main/HomeView'
+// export { default as GenreView } from '@/Containers/GenreView'
+export { default as TrendingView } from '@/Containers/Main/TrendingView'
+export { default as FavoriteView } from '@/Containers/Main/FavoriteView'
 export { default as SplashView } from '@/Containers/SplashView'
 export { default as LoginView } from '@/Containers/LoginView'
