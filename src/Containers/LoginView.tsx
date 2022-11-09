@@ -7,7 +7,8 @@ import {
   View,
   ToastAndroid,
   Keyboard,
-  Image
+  Image,
+  Platform
 } from 'react-native'
 import React, { useState } from 'react'
 import { useAppDispatch } from '@/Hooks'
@@ -20,33 +21,35 @@ import { navigate } from '@/Navigators/utils'
 export default function LoginView() {
   const dispatch = useAppDispatch()
 
-  const [username, changeUsername] = useState('')
-  const [password, changePassword] = useState('')
+  const [username, changeUsername] = useState('luanzt')
+  const [password, changePassword] = useState('Alalal191!')
   const [isLoading, setLoading] = useState(false)
 
   const handleLogin = async () => {
     Keyboard.dismiss()
     if (username.trim() && password.trim()) {
       setLoading(true)
-      const tokenResult = await dispatch(userActions.getRequestToken())
-      if (!tokenResult.error && tokenResult.payload.request_token) {
-        const loginResult = await dispatch(
-          userActions.login({
-            username,
-            password,
-            request_token: tokenResult.payload.request_token
-          })
-        )
-        if (!loginResult.error && loginResult.payload) {
-          console.log('Login success', loginResult)
-          ToastAndroid.show('Login success!', ToastAndroid.SHORT)
-          navigate('Main', '')
-        } else {
-          console.log('Login fail')
-          ToastAndroid.show('Login fail!', ToastAndroid.SHORT)
+      dispatch(userActions.getRequestToken()).then(async (res: any) => {
+        if (!res.error && res.payload.request_token) {
+          const loginResult = await dispatch(
+            userActions.login({
+              username,
+              password,
+              request_token: res.payload.request_token
+            })
+          )
+          if (!loginResult.error && loginResult.payload) {
+            Platform.OS === 'ios'
+              ? null
+              : ToastAndroid.show('Login success!', ToastAndroid.SHORT)
+            dispatch(userActions.getRequestSession(res.payload.request_token))
+            navigate('Main', '')
+          } else {
+            ToastAndroid.show('Login fail!', ToastAndroid.SHORT)
+          }
         }
-      }
-      setLoading(false)
+        setLoading(false)
+      })
     }
   }
 
