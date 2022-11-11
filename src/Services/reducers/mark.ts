@@ -4,9 +4,9 @@ export interface MLState {}
 
 export const defaultState: MLState = {}
 
-export const genresMovie = (state = defaultState, action: any): MLState => {
+export const mark = (state = defaultState, action: any): MLState => {
   switch (action.type) {
-    case Actions.GENRELIST_SUCCESS:
+    case Actions.MARK_SUCCESS:
       return { ...state }
 
     default:
@@ -14,4 +14,4 @@ export const genresMovie = (state = defaultState, action: any): MLState => {
   }
 }
 
-export default genresMovie
+export default mark

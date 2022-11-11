@@ -7,6 +7,7 @@ export interface UserState {
   isLoading: boolean
   signing: boolean
   session_id: string | null
+  id: number | null
 }
 
 export const defaultState: UserState = {
@@ -14,7 +15,8 @@ export const defaultState: UserState = {
   currentUser: null,
   signing: false,
   isLoading: false,
-  session_id: null
+  session_id: '',
+  id: null
 }
 
 export const user = (state = defaultState, action: any): UserState => {
@@ -32,9 +34,12 @@ export const user = (state = defaultState, action: any): UserState => {
     case Actions.LOGIN_ERROR:
       return { ...state, signing: false }
     case Actions.FETCHING_SESSION_SUCCESS:
-      const { requestSession } = action.payload
-      return { ...state, session_id: requestSession }
+      const { session_id } = action.payload
+      return { ...state, session_id: session_id }
+    case Actions.ACCDETAIL_SUCCESS:
+      const { id } = action.payload
 
+      return { ...state, id: id }
     default:
       return state
   }
