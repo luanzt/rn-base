@@ -19,6 +19,7 @@ const apiMiddleware = {
       {
         success: function (store: any, req: any) {
           //merge header from client and we pass manual
+
           const headers = Object.assign(
             {},
             get(req, 'headers.common'),

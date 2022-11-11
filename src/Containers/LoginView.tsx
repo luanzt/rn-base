@@ -42,10 +42,18 @@ export default function LoginView() {
             Platform.OS === 'ios'
               ? null
               : ToastAndroid.show('Login success!', ToastAndroid.SHORT)
-            dispatch(userActions.getRequestSession(res.payload.request_token))
+            const sessionResult: any = await dispatch(
+              userActions.getRequestSession(res.payload.request_token)
+            )
+
+            await dispatch(
+              userActions.getAccountDetail(sessionResult.payload.session_id)
+            )
             navigate('Main', '')
           } else {
-            ToastAndroid.show('Login fail!', ToastAndroid.SHORT)
+            Platform.OS === 'ios'
+              ? null
+              : ToastAndroid.show('Login fail!', ToastAndroid.SHORT)
           }
         }
         setLoading(false)
