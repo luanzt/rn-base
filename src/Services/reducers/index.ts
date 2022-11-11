@@ -1,3 +1,4 @@
+import { favoriteList } from './favoriteList'
 import { combineReducers } from 'redux'
 import * as types from '../actions'
 import genreList from './genreList'
@@ -7,7 +8,8 @@ import user from './users'
 export const appReducer = combineReducers({
   user,
   genreList,
-  trendingList
+  trendingList,
+  favoriteList
 })
 
 const rootReducer = (state: any, action: any) => {
