@@ -6,6 +6,7 @@ module.exports = {
   extends: ['@react-native-community'],
   plugins: ['jest'],
   rules: {
+    'react-hooks/exhaustive-deps': 'off',
     semi: ['error', 'never'],
     'comma-dangle': ['error', 'never'],
     'object-curly-spacing': ['error', 'always'],

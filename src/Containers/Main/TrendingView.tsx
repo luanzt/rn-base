@@ -1,34 +1,52 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import {
   Text,
   SafeAreaView,
   FlatList,
   StyleSheet,
   View,
-  Image
+  Image,
+  TouchableOpacity,
+  RefreshControl
 } from 'react-native'
-import { Colors } from '@/Constants'
+import { Colors, Texts } from '@/Constants'
 import * as trendingActions from '@/Services/apis/trending'
-import { useAppDispatch } from '@/Hooks'
+import * as markActions from '@/Services/apis/mark'
+import { useAppDispatch, useAppSelector } from '@/Hooks'
+import { MovieState } from '@/Type'
 
 type itemProps = {
   movie: MovieState
 }
 
-export type MovieState = {
-  id: number
-  title: String | null
-  name: String | null
-  original_title: String | null
-  overview: String
-  vote_average: number
-  poster_path: String | null
-  backdrop_path: String | null
+const wait = (timeout: number | undefined) => {
+  return new Promise(resolve => setTimeout(resolve, timeout))
 }
-const TrendingView = (_props: any) => {
-  const [list, setList] = useState([])
-
+const TrendingView = () => {
+  const [list, setList] = useState<MovieState[]>([])
+  const [refreshing, setRefreshing] = useState(false)
   const dispatch = useAppDispatch()
+  const sessionId = useAppSelector(state => state.user.sessionId)
+  const accountId = useAppSelector(state => state.user.id)
+
+  const onRefresh = useCallback(() => {
+    setRefreshing(true)
+    wait(1000).then(() => setRefreshing(false))
+  }, [])
+  const addFavorite = async (item: MovieState) => {
+    dispatch(
+      markActions.markAsFavorite(
+        accountId,
+        sessionId,
+        {
+          media_type: 'movie',
+          media_id: item.id,
+          favorite: true
+        },
+        item
+      )
+    )
+  }
   const renderItem = (item: MovieState) => {
     const {
       title,
@@ -39,6 +57,7 @@ const TrendingView = (_props: any) => {
       poster_path,
       backdrop_path
     } = item
+
     return (
       <View style={styles.container}>
         <View style={styles.item}>
@@ -54,6 +73,12 @@ const TrendingView = (_props: any) => {
             <Text style={styles.title}>{title || name || original_title}</Text>
             <Text style={styles.overview}>Rating: {vote_average}</Text>
             <Text style={styles.overview}>{overview}</Text>
+            <TouchableOpacity
+              onPress={() => addFavorite(item)}
+              style={styles.button}
+            >
+              <Text style={styles.fav}>{Texts.addFavorite}</Text>
+            </TouchableOpacity>
           </View>
         </View>
       </View>
@@ -70,7 +95,14 @@ const TrendingView = (_props: any) => {
       <FlatList
         data={list}
         renderItem={({ item }: any) => renderItem(item)}
-        keyExtractor={(item: any) => item.id}
+        keyExtractor={(item: MovieState, index: number) => `${index}`}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+            tintColor={Colors.fav_button}
+          />
+        }
       />
     </SafeAreaView>
   )
@@ -104,6 +136,21 @@ const styles = StyleSheet.create({
   info: {
     flex: 2,
     marginLeft: 8
+  },
+  button: {
+    width: 200,
+    height: 50,
+    backgroundColor: Colors.fav_button,
+    borderRadius: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginHorizontal: 20,
+    flexDirection: 'row'
+  },
+  fav: {
+    color: Colors.primary,
+    fontWeight: 'bold',
+    fontSize: 15
   }
 })
 
