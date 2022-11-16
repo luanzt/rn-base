@@ -38,9 +38,7 @@ const FavoriteView = () => {
         media_id: item.id,
         favorite: false
       })
-    ).then((res: any) => {
-      console.log(res.type)
-      console.log(indexOf(results, item))
+    ).then(() => {
       return dispatch(markActions.deleteItem(indexOf(results, item)))
     })
   }
@@ -83,7 +81,6 @@ const FavoriteView = () => {
   useEffect(() => {
     dispatch(favoriteActions.getList(accountId, sessionId))
   }, [])
-  console.log(results)
 
   return (
     <SafeAreaView style={styles.container}>

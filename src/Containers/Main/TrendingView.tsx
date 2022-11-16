@@ -41,8 +41,6 @@ const TrendingView = () => {
         favorite: true
       })
     ).then((res: any) => {
-      console.log(res.payload)
-
       if (res.payload.status_code === 1) {
         return dispatch(markActions.addItem(item))
       }
