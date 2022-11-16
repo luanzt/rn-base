@@ -1,64 +1,63 @@
-import AsyncStorage from '@react-native-async-storage/async-storage'
-import { combineReducers, Middleware } from 'redux'
-import {
-  persistReducer,
-  persistStore,
-  FLUSH,
-  REHYDRATE,
-  PAUSE,
-  PERSIST,
-  PURGE,
-  REGISTER
-} from 'redux-persist'
-import { configureStore } from '@reduxjs/toolkit'
-import { setupListeners } from '@reduxjs/toolkit/query'
+import thunk from 'redux-thunk'
+import { createStore, applyMiddleware } from 'redux'
+import rootReducer from '@/Services/reducers'
+import axios from 'axios'
+import axiosMiddleware from 'redux-axios-middleware'
+import { HOST } from '@/Services/endpoints'
+import get from 'lodash/get'
 
-import { api } from '@/Services/api'
-import * as modules from '@/Services/modules'
-import theme from './Theme'
-
-const reducers = combineReducers({
-  theme,
-  ...Object.values(modules).reduce(
-    (acc, module) => ({
-      ...acc,
-      [module.reducerPath]: module.reducer
-    }),
-    {}
-  )
+const client = axios.create({
+  //all axios can be used, shown in axios documentation
+  baseURL: HOST,
+  responseType: 'json',
+  params: { api_key: '1270f8b48ea8fdfeb112071f737ab3bb' }
 })
 
-const persistConfig = {
-  key: 'root',
-  storage: AsyncStorage,
-  whitelist: ['theme']
+const apiMiddleware = {
+  interceptors: {
+    request: [
+      {
+        success: function (store: any, req: any) {
+          //merge header from client and we pass manual
+          const headers = Object.assign(
+            {},
+            get(req, 'headers.common'),
+            get(req, 'reduxSourceAction.payload.request.headers')
+          )
+          if (get(store.getState(), 'user.token')) {
+            headers.Authorization = `Token ${get(
+              store.getState(),
+              'user.token'
+            )}`
+          }
+          return {
+            ...req,
+            headers: {
+              common: headers
+            }
+          }
+        }
+      }
+    ],
+    response: [
+      {
+        success: function (store: any, res: any) {
+          return Promise.resolve(res.data)
+        },
+        error: function (store: any, error: any) {
+          return Promise.reject(error)
+        }
+      }
+    ]
+  }
 }
 
-const persistedReducer = persistReducer(persistConfig, reducers)
-
-const store = configureStore({
-  reducer: persistedReducer,
-  middleware: getDefaultMiddleware => {
-    const middlewares = getDefaultMiddleware({
-      serializableCheck: {
-        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER]
-      }
-    }).concat(api.middleware as Middleware)
-
-    if (__DEV__ && !process.env.JEST_WORKER_ID) {
-      const createDebugger = require('redux-flipper').default
-      middlewares.push(createDebugger())
-    }
-
-    return middlewares
-  }
-})
-
-const persistor = persistStore(store)
-
-setupListeners(store.dispatch)
+let store = createStore(
+  rootReducer,
+  applyMiddleware(thunk, axiosMiddleware(client, apiMiddleware))
+)
 
 export type RootState = ReturnType<typeof store.getState>
 export type AppDispatch = typeof store.dispatch
 
-export { store, persistor }
+export default store

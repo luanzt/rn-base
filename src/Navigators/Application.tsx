@@ -1,24 +1,24 @@
 import React from 'react'
-import { SafeAreaView, StatusBar } from 'react-native'
+import { SafeAreaView, StatusBar, StyleSheet } from 'react-native'
 import { createStackNavigator } from '@react-navigation/stack'
-import { NavigationContainer } from '@react-navigation/native'
-import { SplashView } from '@/Navigators/Stack'
-import { useTheme } from '@/Hooks'
+import { NavigationContainer, DefaultTheme } from '@react-navigation/native'
+import { SplashView, LoginView } from '@/Navigators/Stack'
 import MainNavigator from '@/Containers/Main'
 import { navigationRef } from './utils'
 
 const Stack = createStackNavigator()
 
-// @refresh reset
 const ApplicationNavigator = () => {
-  const { Layout } = useTheme()
-
   return (
-    <SafeAreaView style={Layout.fill}>
-      <NavigationContainer ref={navigationRef}>
+    <SafeAreaView style={styles.container}>
+      <NavigationContainer ref={navigationRef} theme={MyTheme}>
         <StatusBar barStyle={'light-content'} />
-        <Stack.Navigator screenOptions={{ headerShown: false }}>
+        <Stack.Navigator
+          screenOptions={{ headerShown: false }}
+          initialRouteName="Splash"
+        >
           <Stack.Screen name="Splash" component={SplashView} />
+          <Stack.Screen name="Login" component={LoginView} />
           <Stack.Screen
             name="Main"
             component={MainNavigator}
@@ -30,6 +30,20 @@ const ApplicationNavigator = () => {
       </NavigationContainer>
     </SafeAreaView>
   )
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1
+  }
+})
+
+const MyTheme = {
+  ...DefaultTheme,
+  colors: {
+    ...DefaultTheme.colors,
+    background: 'white'
+  }
 }
 
 export default ApplicationNavigator

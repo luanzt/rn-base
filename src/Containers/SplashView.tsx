@@ -1,20 +1,17 @@
 import React, { useEffect } from 'react'
-import { ActivityIndicator, View, Text } from 'react-native'
-import { useTheme } from '@/Hooks'
-import { setDefaultTheme } from '@/Store/Theme'
+import { View, StyleSheet } from 'react-native'
 import { navigateAndSimpleReset } from '@/Navigators/utils'
+import { SvgXml } from 'react-native-svg'
+import { Icons } from '@/Assets'
 
-const StartupContainer = () => {
-  const { Layout, Gutters, Fonts } = useTheme()
-
+const SplashView = () => {
   const init = async () => {
     await new Promise(resolve =>
       setTimeout(() => {
         resolve(true)
       }, 2000)
     )
-    await setDefaultTheme({ theme: 'default', darkMode: null })
-    navigateAndSimpleReset('Main')
+    navigateAndSimpleReset('Login')
   }
 
   useEffect(() => {
@@ -22,11 +19,20 @@ const StartupContainer = () => {
   })
 
   return (
-    <View style={[Layout.fill, Layout.colCenter]}>
-      <ActivityIndicator size={'large'} style={[Gutters.largeVMargin]} />
-      <Text style={Fonts.textCenter}>Splash</Text>
+    <View style={styles.container}>
+      <SvgXml xml={Icons.Logo} height={140} width={140} />
     </View>
   )
 }
 
-export default StartupContainer
+const styles = StyleSheet.create({
+  container: {
+    height: '100%',
+    width: '100%',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#FFF'
+  }
+})
+
+export default SplashView
