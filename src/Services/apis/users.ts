@@ -18,7 +18,7 @@ export const getRequestToken = (): any => ({
   }
 })
 
-export const getRequestSession = (request_token: any) => ({
+export const getRequestSession = (request_token: string) => ({
   types: [
     Actions.FETCHING_SESSION,
     Actions.FETCHING_SESSION_SUCCESS,
@@ -27,9 +27,7 @@ export const getRequestSession = (request_token: any) => ({
   payload: {
     request: {
       method: 'POST',
-      data: {
-        request_token
-      },
+      data: { request_token },
       url: Endpoints.requestSession
     } as AxiosRequestConfig
   }
@@ -46,7 +44,7 @@ export const login = (data: LoginData): any => ({
   }
 })
 
-export const getAccountDetail = (): any => ({
+export const getAccountDetail = (session_id: string): any => ({
   types: [
     Actions.REQUEST_ACCDETAIL,
     Actions.ACCDETAIL_SUCCESS,
@@ -55,7 +53,8 @@ export const getAccountDetail = (): any => ({
   payload: {
     request: {
       method: 'GET',
-      url: Endpoints.account
+      url: Endpoints.account,
+      params: { session_id }
     } as AxiosRequestConfig
   }
 })

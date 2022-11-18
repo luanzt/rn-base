@@ -1,17 +1,11 @@
 import React from 'react'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { TrendingView, FavoriteView } from '@/Navigators/Stack'
-import { connect } from 'react-redux'
 
 const Tab = createBottomTabNavigator()
 
-type props = {
-  token: any
-}
 // @refresh reset
-const MainNavigator = (props: any) => {
-  console.log(props.token)
-
+const MainNavigator = () => {
   return (
     <Tab.Navigator>
       <Tab.Screen
@@ -34,14 +28,4 @@ const MainNavigator = (props: any) => {
   )
 }
 
-const mapStatesToProps = (state: any) => {
-  return {
-    token: state.user.token
-  }
-}
-
-const mapDispatchToProps = (_dispatch: any) => {
-  return {}
-}
-
-export default connect(mapStatesToProps, mapDispatchToProps)(MainNavigator)
+export default MainNavigator

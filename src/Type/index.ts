@@ -26,3 +26,14 @@ export interface User {
   approved_sharing_book_reviews_publicly: boolean | null
   get_requested_club_ids?: number[]
 }
+export interface MovieState {
+  results: [{}]
+  backdrop_path: string | null
+  id: number
+  name: String | null
+  original_title: string | null
+  overview: string | null
+  poster_path: string | null
+  title: string | null
+  vote_average: string | null
+}

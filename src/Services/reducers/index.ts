@@ -3,11 +3,13 @@ import * as types from '../actions'
 import genreList from './genreList'
 import trendingList from './trendingList'
 import user from './users'
+import favorite from './favorite'
 
 export const appReducer = combineReducers({
   user,
   genreList,
-  trendingList
+  trendingList,
+  favorite
 })
 
 const rootReducer = (state: any, action: any) => {
