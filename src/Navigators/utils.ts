@@ -17,9 +17,24 @@ type RootStackParamList = {
 
 export const navigationRef = createNavigationContainerRef<RootStackParamList>()
 
-export function navigate(name: keyof RootStackParamList, params: any) {
+export function navigate<RouteName extends keyof RootStackParamList>(
+  options: RouteName extends unknown
+    ?
+        | {
+            key: string
+            params?: RootStackParamList[RouteName]
+            merge?: boolean
+          }
+        | {
+            name: RouteName
+            key?: string
+            params: RootStackParamList[RouteName]
+            merge?: boolean
+          }
+    : never
+) {
   if (navigationRef.isReady()) {
-    navigationRef.navigate(name, params)
+    navigationRef.navigate(options)
   }
 }
 
