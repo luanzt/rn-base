@@ -1,5 +1,5 @@
 import thunk from 'redux-thunk'
-import { createStore, applyMiddleware } from 'redux'
+import { configureStore } from '@reduxjs/toolkit'
 import rootReducer from '@/Services/reducers'
 import axios from 'axios'
 import axiosMiddleware from 'redux-axios-middleware'
@@ -52,10 +52,10 @@ const apiMiddleware = {
   }
 }
 
-let store = createStore(
-  rootReducer,
-  applyMiddleware(thunk, axiosMiddleware(client, apiMiddleware))
-)
+let store = configureStore({
+  reducer: rootReducer,
+  middleware: [thunk, axiosMiddleware(client, apiMiddleware)]
+})
 
 export type RootState = ReturnType<typeof store.getState>
 export type AppDispatch = typeof store.dispatch
