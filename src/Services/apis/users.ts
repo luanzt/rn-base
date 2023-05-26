@@ -1,5 +1,5 @@
 import * as Actions from '../actions'
-import * as Endpoints from '@/Services/endpoints'
+import * as Endpoints from '@/services/endpoints'
 import { AxiosRequestConfig } from 'axios'
 
 export type LoginData = {

@@ -1,8 +1,9 @@
 import 'react-native-gesture-handler'
 import React from 'react'
 import { Provider } from 'react-redux'
-import store from '@/Store'
-import ApplicationNavigator from '@/Navigators/Application'
+import store from '@/store'
+import ApplicationNavigator from '@/navigators/Application'
+import './translations'
 
 const App = () => (
   <Provider store={store}>

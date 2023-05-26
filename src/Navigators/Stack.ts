@@ -1,3 +1,3 @@
-export { default as HomeView } from '@/Containers/Main/HomeView'
-export { default as SplashView } from '@/Containers/SplashView'
-export { default as LoginView } from '@/Containers/LoginView'
+export { default as HomeView } from '@/screens/main/HomeView'
+export { default as SplashView } from '@/screens/SplashView'
+export { default as LoginView } from '@/screens/LoginView'

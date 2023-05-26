@@ -1,8 +1,6 @@
 import React, { useEffect } from 'react'
-import { View, StyleSheet } from 'react-native'
-import { navigateAndSimpleReset } from '@/Navigators/utils'
-import { SvgXml } from 'react-native-svg'
-import { Icons } from '@/Assets'
+import { View, StyleSheet, Text } from 'react-native'
+import { navigateAndSimpleReset } from '@/navigators/NavigationHelpers'
 
 const SplashView = () => {
   const init = async () => {
@@ -20,7 +18,7 @@ const SplashView = () => {
 
   return (
     <View style={styles.container}>
-      <SvgXml xml={Icons.Logo} height={140} width={140} />
+      <Text>SPLASH SCREEN</Text>
     </View>
   )
 }
