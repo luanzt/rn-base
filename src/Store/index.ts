@@ -1,9 +1,9 @@
 import thunk from 'redux-thunk'
 import { configureStore } from '@reduxjs/toolkit'
-import rootReducer from '@/Services/reducers'
+import rootReducer from '@/services/reducers'
 import axios from 'axios'
 import axiosMiddleware from 'redux-axios-middleware'
-import { HOST } from '@/Services/endpoints'
+import { HOST } from '@/services/endpoints'
 import get from 'lodash/get'
 
 const client = axios.create({

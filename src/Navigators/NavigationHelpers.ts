@@ -18,23 +18,21 @@ type RootStackParamList = {
 export const navigationRef = createNavigationContainerRef<RootStackParamList>()
 
 export function navigate<RouteName extends keyof RootStackParamList>(
-  options: RouteName extends unknown
-    ?
-        | {
-            key: string
-            params?: RootStackParamList[RouteName]
-            merge?: boolean
-          }
-        | {
-            name: RouteName
-            key?: string
-            params: RootStackParamList[RouteName]
-            merge?: boolean
-          }
+  ...args: // this first condition allows us to iterate over a union type
+  // This is to avoid getting a union of all the params from `ParamList[RouteName]`,
+  // which will get our types all mixed up if a union RouteName is passed in.
+  RouteName extends unknown
+    ? // This condition checks if the params are optional,
+      // which means it's either undefined or a union with undefined
+      undefined extends RootStackParamList[RouteName]
+      ?
+          | [screen: RouteName] // if the params are optional, we don't have to provide it
+          | [screen: RouteName, params: RootStackParamList[RouteName]]
+      : [screen: RouteName, params: RootStackParamList[RouteName]]
     : never
 ) {
   if (navigationRef.isReady()) {
-    navigationRef.navigate(options)
+    navigationRef.navigate(...args)
   }
 }
 

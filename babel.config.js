@@ -6,7 +6,9 @@ const plugins = [
       root: ['./src'],
       extensions: ['.js', '.json'],
       alias: {
-        '@': './src'
+        '@': './src',
+        icons: './src/assets/icons',
+        images: './src/assets/images'
       }
     }
   ],

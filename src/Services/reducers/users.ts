@@ -1,5 +1,5 @@
 import * as Actions from '../actions'
-import { User } from '@/Type'
+import { User } from '@/type'
 
 export interface UserState {
   token: string

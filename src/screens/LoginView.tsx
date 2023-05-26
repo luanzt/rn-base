@@ -7,11 +7,16 @@ import {
   View
 } from 'react-native'
 import React, { useState } from 'react'
-import { useAppDispatch } from '@/Hooks'
-import * as userActions from '@/Services/apis/users'
-import { Colors } from '@/Constants'
+import { useAppDispatch } from '@/hooks'
+import * as userActions from '@/services/apis/users'
+import { Colors } from '@/constants'
+import { useTranslation } from 'react-i18next'
+import i18next from 'i18next'
+import { Icon } from '@/components'
 
 export default function LoginView() {
+  const { t } = useTranslation(['login'])
+
   const dispatch = useAppDispatch()
 
   const [username, changeUsername] = useState('')
@@ -38,21 +43,37 @@ export default function LoginView() {
     }
   }
 
+  const handleChangeLanguage = () => {
+    i18next.changeLanguage('fr')
+  }
+
   return (
     <View style={styles.container}>
       <TextInput
         value={username}
         onChangeText={changeUsername}
-        placeholder="Email"
+        placeholder={t('login:email')}
       />
       <TextInput
         value={password}
         onChangeText={changePassword}
-        placeholder="Password"
+        placeholder={t('login:password')}
         secureTextEntry
       />
-      <TouchableOpacity onPress={handleLogin} disabled={isLoading}>
-        <Text>Login</Text>
+      <TouchableOpacity
+        onPress={handleLogin}
+        disabled={isLoading}
+        style={styles.buttonLogin}
+      >
+        <Text style={styles.loginText}>{t('login:login')}</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity
+        onPress={handleChangeLanguage}
+        style={styles.buttonChangeLang}
+      >
+        <Icon icon="flag" size={24} />
+        <Text style={styles.langText}>Change Lang</Text>
       </TouchableOpacity>
       {isLoading && <ActivityIndicator color={Colors.black} />}
     </View>
@@ -64,5 +85,22 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center'
-  }
+  },
+  buttonLogin: {
+    height: 40,
+    marginTop: 15,
+    paddingHorizontal: 15,
+    borderRadius: 20,
+    backgroundColor: '#000',
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  buttonChangeLang: {
+    flexDirection: 'row',
+    position: 'absolute',
+    bottom: 40,
+    alignItems: 'center'
+  },
+  loginText: { color: '#FFF' },
+  langText: { marginStart: 10 }
 })
