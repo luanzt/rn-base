@@ -3,12 +3,13 @@
   "version": "3.2.0",
   "private": true,
   "scripts": {
-    "android": "react-native run-android",
-    "ios": "react-native run-ios --simulator='iPhone 11'",
+    "android": "npx react-native run-android",
+    "ios": "npx react-native run-ios --simulator='iPhone 11'",
     "start": "react-native start",
     "test": "jest",
     "lint": "eslint .",
     "check-ts": "tsc",
+    "fix": "yarn lint --fix && yarn check-ts",
     "format": "prettier --config .prettierrc.js './**/*.{ts,tsx}' --write"
   },
   "dependencies": {
