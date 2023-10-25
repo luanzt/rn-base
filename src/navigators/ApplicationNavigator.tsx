@@ -2,7 +2,7 @@ import React from 'react'
 import { SafeAreaView, StatusBar, StyleSheet } from 'react-native'
 import { createStackNavigator } from '@react-navigation/stack'
 import { NavigationContainer, DefaultTheme } from '@react-navigation/native'
-import { SplashView, LoginView } from '@/navigators/Stack'
+import { SplashView, LoginView } from '@/navigators/Screens'
 import MainNavigator from '@/screens/main'
 import { navigationRef } from './NavigationHelpers'
 
