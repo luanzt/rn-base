@@ -1,10 +1,14 @@
 import React from 'react'
 import { SafeAreaView, StatusBar, StyleSheet } from 'react-native'
-import { createStackNavigator } from '@react-navigation/stack'
+import {
+  CardStyleInterpolators,
+  createStackNavigator
+} from '@react-navigation/stack'
 import { NavigationContainer, DefaultTheme } from '@react-navigation/native'
 import { SplashView, LoginView } from '@/navigators/Screens'
 import MainNavigator from '@/screens/main'
 import { navigationRef } from './NavigationHelpers'
+import PlayVideoView from '@/screens/PlayVideoView'
 
 const Stack = createStackNavigator()
 
@@ -19,6 +23,14 @@ const ApplicationNavigator = () => {
         >
           <Stack.Screen name="Splash" component={SplashView} />
           <Stack.Screen name="Login" component={LoginView} />
+          <Stack.Screen
+            name="PlayVideo"
+            component={PlayVideoView}
+            options={{
+              animationEnabled: false,
+              cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS
+            }}
+          />
           <Stack.Screen
             name="Main"
             component={MainNavigator}

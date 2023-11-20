@@ -9,7 +9,7 @@ const SplashView = () => {
         resolve(true)
       }, 2000)
     )
-    navigateAndSimpleReset('Login')
+    navigateAndSimpleReset('Main')
   }
 
   useEffect(() => {

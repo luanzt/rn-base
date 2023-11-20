@@ -26,3 +26,29 @@ export interface User {
   approved_sharing_book_reviews_publicly: boolean | null
   get_requested_club_ids?: number[]
 }
+
+export interface Response {
+  kind: string
+  etag: string
+  nextPageToken: string
+  regionCode: string
+  pageInfo: {
+    totalResults: number
+    resultsPerPage: number
+  }
+}
+
+export interface SearchResult extends Response {
+  items: SearchItem[]
+}
+
+export interface SearchItem {
+  kind: string
+  etag: string
+  id: SearchID
+}
+
+export interface SearchID {
+  kind: string
+  videoId: string
+}

@@ -10,7 +10,7 @@ const client = axios.create({
   //all axios can be used, shown in axios documentation
   baseURL: HOST,
   responseType: 'json',
-  params: { api_key: '1270f8b48ea8fdfeb112071f737ab3bb' }
+  params: { key: 'AIzaSyDaKOcpIK-ga5iCZqAUhweZikOQDbyzBsM' }
 })
 
 const apiMiddleware = {
