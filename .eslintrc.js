@@ -22,7 +22,8 @@ module.exports = {
         ignoreRegExpLiterals: true,
         ignoreTemplateLiterals: true
       }
-    ]
+    ],
+    'react-hooks/exhaustive-deps': 'off'
   },
   settings: {
     'import/resolver': {

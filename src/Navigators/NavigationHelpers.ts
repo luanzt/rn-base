@@ -13,6 +13,7 @@ type RootStackParamList = {
   Main: undefined
   Splash: undefined
   Login: undefined
+  PlayVideo: undefined
 }
 
 export const navigationRef = createNavigationContainerRef<RootStackParamList>()

@@ -1,5 +1,4 @@
 import * as React from 'react'
-import { ComponentType } from 'react'
 import {
   ColorValue,
   Image,
@@ -7,7 +6,6 @@ import {
   StyleProp,
   TouchableOpacity,
   TouchableOpacityProps,
-  View,
   ViewStyle
 } from 'react-native'
 
@@ -27,7 +25,7 @@ interface IconProps extends TouchableOpacityProps {
   /**
    * An optional size for the icon. If not provided, the icon will be sized to the icon's resolution.
    */
-  size?: number | string
+  size?: number
 
   /**
    * Style overrides for the icon image
@@ -52,38 +50,26 @@ interface IconProps extends TouchableOpacityProps {
  * - [Documentation and Examples](https://github.com/infinitered/ignite/blob/master/docs/Components-Icon.md)
  */
 export function Icon(props: IconProps) {
-  const {
-    icon,
-    color,
-    size,
-    style: $imageStyleOverride,
-    containerStyle: $containerStyleOverride,
-    ...WrapperProps
-  } = props
-
-  const isPressable = !!WrapperProps.onPress
-  const Wrapper: ComponentType<TouchableOpacityProps> = WrapperProps?.onPress
-    ? TouchableOpacity
-    : View
+  const { icon, color, size, style, containerStyle, onPress, ...WrapperProps } =
+    props
 
   return (
-    <Wrapper
-      accessibilityRole={isPressable ? 'imagebutton' : undefined}
+    <TouchableOpacity
       {...WrapperProps}
-      style={$containerStyleOverride}
+      style={containerStyle}
+      disabled={!onPress}
+      onPress={onPress}
     >
       <Image
         style={[
           $imageStyle,
-          {
-            ...(color && { tintColor: color }),
-            ...(size && { width: size, height: size })
-          },
-          $imageStyleOverride
+          { tintColor: color },
+          { width: size, height: size },
+          style
         ]}
         source={iconRegistry[icon]}
       />
-    </Wrapper>
+    </TouchableOpacity>
   )
 }
 

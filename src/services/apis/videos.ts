@@ -21,7 +21,7 @@ export const searchingVideo = (paramSearch: ParamSearch) => ({
     request: {
       method: 'GET',
       url: Endpoints.search,
-      params: paramSearch
+      params: { ...paramSearch, part: 'snippet' }
     } as AxiosRequestConfig
   }
 })

@@ -46,9 +46,31 @@ export interface SearchItem {
   kind: string
   etag: string
   id: SearchID
+  snippet: Snipet
 }
 
 export interface SearchID {
   kind: string
   videoId: string
+}
+
+export interface Avatar {
+  url: string
+  width: number
+  height: number
+}
+
+export interface Snipet {
+  publishedAt: string
+  channelId: string
+  title: string
+  description: string
+  thumbnails: {
+    default: Avatar
+    medium: Avatar
+    high: Avatar
+  }
+  channelTitle: string
+  liveBroadcastContent: string
+  publishTime: string
 }

@@ -1,8 +1,10 @@
+import { SearchItem } from '@/type'
 import React, { useState, useCallback } from 'react'
-import { View, Alert, StyleSheet, Platform } from 'react-native'
+import { Alert, StyleSheet, Platform, SafeAreaView } from 'react-native'
 import YoutubePlayer from 'react-native-youtube-iframe'
 
-export default function PlayVideoView() {
+export default function PlayVideoView({ route }) {
+  const video: SearchItem = route.params.videoItem
   const [playing, setPlaying] = useState(false)
 
   const onStateChange = useCallback(state => {
@@ -13,11 +15,11 @@ export default function PlayVideoView() {
   }, [])
 
   return (
-    <View>
+    <SafeAreaView>
       <YoutubePlayer
         height={300}
         play={playing}
-        videoId={'BMEvL548CII'}
+        videoId={video.id.videoId}
         onChangeState={onStateChange}
         webViewStyle={styles.webviewStyles}
         webViewProps={{
@@ -28,7 +30,7 @@ export default function PlayVideoView() {
           renderToHardwareTextureAndroid: true
         }}
       />
-    </View>
+    </SafeAreaView>
   )
 }
 
